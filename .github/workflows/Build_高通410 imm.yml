@@ -315,8 +315,11 @@ jobs:
 
         # 创建刷机包目录并打包 zip
         mkdir -p flash_package
-        BOOT_IMG=$(ls *boot.img.gz *boot.img 2>/dev/null | head -1)
-        SYSTEM_IMG=$(ls *system.img.gz *system.img 2>/dev/null | head -1)
+        BOOT_IMG=$(find . -maxdepth 1 -type f \( -name "*${PROFILE}*boot.img.gz" -o -name "*${PROFILE}*boot.img" \) | head -1)
+        SYSTEM_IMG=$(find . -maxdepth 1 -type f \( -name "*${PROFILE}*system.img.gz" -o -name "*${PROFILE}*system.img" \) | head -1)
+        echo "当前设备型号: $PROFILE"
+        echo "找到 boot 镜像: $BOOT_IMG"
+        echo "找到 system 镜像: $SYSTEM_IMG"
         if [ -z "$BOOT_IMG" ] || [ -z "$SYSTEM_IMG" ]; then
           echo "::error::固件文件未找到，编译可能失败！当前目录文件："
           ls -la
